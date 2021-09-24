@@ -1,30 +1,20 @@
 package test1;
 
-import java.io.Serializable;
-import java.util.AbstractSequentialList;
-import java.util.Collection;
-import java.util.Deque;
-import java.util.List;
-
 class linkedList<T> {
-    private Throwable IndexOutOfBoundsException;
-    private Throwable NullPointerException;
 
-    private static final long serialVersionUID = 876323262645176444L;
-
-    class Entry<T> {
+    private static final class Entry<T> {
         T data;
-        Entry next = null;
+        Entry<T> next = null;
 
         Entry(T data) {
             this.data = data;
         }
     }
 
-    private Entry head;
+    private Entry<T> head;
     private int size = 0;
 
-    public Entry getHead() {
+    public Entry<T> getHead() {
         return this.head;
     }
 
@@ -36,44 +26,53 @@ class linkedList<T> {
         this.head = null;
     }
 
-    linkedList(linkedList c) {
+    linkedList(linkedList<T> c) {
         this.head = c.getHead();
+        this.size = c.size();
     }
 
     public boolean add(T c) {
         boolean isNotDuplicate = true;
         if (this.head == null) {
-            this.head = new Entry(c);
+            this.head = new Entry<>(c);
         } else {
-            Entry tmp = this.head;
+            Entry<T> tmp = this.head;
             for (; tmp.next != null; tmp = tmp.next)
                 if (tmp.data == c)
                     isNotDuplicate = false;
-            tmp.next = new Entry(c);
+            tmp.next = new Entry<>(c);
         }
         this.size++;
         return isNotDuplicate;
     }
 
-    public void add(int index, T element) throws Throwable {
+    public void add(int index, T element) throws IndexOutOfBoundsException {
         if (this.head == null) {
-            this.head = new Entry(element);
+            this.head = new Entry<>(element);
         } else {
-            if (index < 0 || index > size()) {
-                throw IndexOutOfBoundsException;
+            Entry<T> e = new Entry<>(element);
+            if (index == 0) {
+                e.next = getEntry(index);
+                this.head = e;
+            } else {
+                e.next = getEntry(index);
+                getEntry(index - 1).next = e;
             }
-            Entry current = this.head;
-            Entry beforeCurrent = this.head;
-            for (int i = 0; i < index; beforeCurrent = current ,current = current.next, ++i);
-            beforeCurrent.next = new Entry(element);
-            beforeCurrent.next.next = current;
         }
         this.size++;
     }
 
-    public T get(int index) throws Throwable {
+    private Entry<T> getEntry(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index > size())
-            throw IndexOutOfBoundsException;
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size);
+        Entry<T> tmp = this.head;
+        for (int i = 0; i < index; tmp = tmp.next, ++i);
+        return tmp;
+    }
+
+    public T get(int index) throws IndexOutOfBoundsException {
+        if (index < 0 || index > size())
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size);
         Entry<T> tmp = this.head;
         for (int i = 0; i < index; tmp = tmp.next, ++i);
         return tmp.data;
@@ -90,8 +89,6 @@ class linkedList<T> {
     @Override
     public String toString() {
         return "linkedList{" +
-                "IndexOutOfBoundsException=" + IndexOutOfBoundsException +
-                ", NullPointerException=" + NullPointerException +
                 ", head=" + head +
                 ", size=" + size +
                 '}';
@@ -100,19 +97,18 @@ class linkedList<T> {
 
 public class Main {
 
-    public static void main(String[] args) throws Throwable {
-        System.out.println("Hello world!");
+    public static void main(String[] args) {
 
-        linkedList lst = new linkedList();
+        linkedList<Integer> lst = new linkedList<>();
 
         lst.add(1);
         lst.add(2);
         lst.add(3);
 
-        for (int i = 0; i < lst.size(); ++i)
-            System.out.println(i + ") " + lst.get(i));
+//        for (int i = 0; i < lst.size(); ++i)
+//            System.out.println(i + ") " + lst.get(i));
 
-        lst.add(0, 55);
+        lst.add(4, 55);
 
         for (int i = 0; i < lst.size(); ++i)
             System.out.println(i + ") " + lst.get(i));
