@@ -97,6 +97,21 @@ class linkedList<T> {
         return prev.data;
     }
 
+    public T set(int index, T element) {
+        if (index < 0 || index > size())
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size);
+        Entry<T> replacer = new Entry<>(element);
+        if (index == 0) {
+            replacer.next = this.head.next;
+            this.head = replacer;
+            return this.head.data;
+        }
+        Entry<T> prev = getEntry(index - 1);
+        replacer.next = getEntry(index).next;
+        prev.next = replacer;
+        return prev.data;
+    }
+
 }
 
 public class Main {
