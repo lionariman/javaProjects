@@ -78,21 +78,25 @@ class linkedList<T> {
         return tmp.data;
     }
 
-//    public boolean addAll(Collection<? extends T> c) throws Throwable {
-//        if (c == null)
-//            throw NullPointerException;
-//        for (int i = 0; i < c.size(); ++i)
-//            add();
-//    }
-
-
-    @Override
-    public String toString() {
-        return "linkedList{" +
-                ", head=" + head +
-                ", size=" + size +
-                '}';
+    public T remove() {
+        if (this.head != null) {
+            this.head = this.head.next;
+            this.size--;
+        }
+        return this.head.data;
     }
+
+    public T remove(int index) {
+        if (index < 0 || index > size())
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size);
+        if (index == 0)
+            return remove();
+        Entry<T> prev = getEntry(index - 1);
+        prev.next = prev.next.next;
+        this.size--;
+        return prev.data;
+    }
+
 }
 
 public class Main {
@@ -108,7 +112,8 @@ public class Main {
 //        for (int i = 0; i < lst.size(); ++i)
 //            System.out.println(i + ") " + lst.get(i));
 
-        lst.add(4, 55);
+//        lst.add(4, 55);
+        lst.remove(1);
 
         for (int i = 0; i < lst.size(); ++i)
             System.out.println(i + ") " + lst.get(i));
