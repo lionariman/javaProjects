@@ -46,7 +46,7 @@ class linkedList<T> {
         return isNotDuplicate;
     }
 
-    public void add(int index, T element) throws IndexOutOfBoundsException {
+    public void add(int index, T element) {
         if (this.head == null) {
             this.head = new Entry<>(element);
         } else {
@@ -62,7 +62,7 @@ class linkedList<T> {
         this.size++;
     }
 
-    private Entry<T> getEntry(int index) throws IndexOutOfBoundsException {
+    private Entry<T> getEntry(int index) {
         if (index < 0 || index > size())
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size);
         Entry<T> tmp = this.head;
@@ -70,7 +70,7 @@ class linkedList<T> {
         return tmp;
     }
 
-    public T get(int index) throws IndexOutOfBoundsException {
+    public T get(int index) {
         if (index < 0 || index > size())
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size);
         Entry<T> tmp = this.head;
@@ -128,7 +128,10 @@ public class Main {
 //            System.out.println(i + ") " + lst.get(i));
 
 //        lst.add(4, 55);
-        lst.remove(1);
+//        lst.remove(1);
+
+//        lst.set(0, 34);
+        lst.set(2, 100);
 
         for (int i = 0; i < lst.size(); ++i)
             System.out.println(i + ") " + lst.get(i));
